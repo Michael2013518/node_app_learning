@@ -1,0 +1,18 @@
+# compiled output
+/node_modules
+/dist
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+#OS
+.DS_Store
+
+#IDE VSCODE
+.vscode/*
+!.vscode/setting.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
