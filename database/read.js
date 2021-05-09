@@ -1,0 +1,18 @@
+const Event = require('../models/Event')
+
+Event.find()
+    .then(documents => console.log(documents))
+    .catch(error => console.log(error))
+
+Event.find({ title: "NodeJS开发者大会" })
+    .then(document => console.log('\n find指定标题的文档\n', document))
+    .catch(error => console.log(error))
+Event.findOne({ title: "NodeJS开发者大会" })
+    .then(document => console.log('\n findOne指定标题的文档\n', document))
+    .catch(error => console.log(error))
+Event.findOne({ _id: "6097b54e9a9d6611262c79d6" })
+    .then(document => console.log('\n findOne指定标题的文档\n', document))
+    .catch(error => console.log(error))
+Event.findById({ _id: "6097b54e9a9d6611262c79d7" })
+    .then(document => console.log('\n findById指定标题的文档\n', document))
+    .catch(error => console.log(error))
