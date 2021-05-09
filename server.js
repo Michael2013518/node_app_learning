@@ -3,11 +3,12 @@ const express = require('express')
 const morgan = require('morgan')
 const path = require('path')
 const bodyParser = require('body-parser')
-const db = require('./config/database')
-
+const eventRouter = require('./routes/eventRouter')
 const app = new express()
+const port = process.env.PORT || 3000
 
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 let comments = []
 app.locals.comments = comments
 
@@ -17,7 +18,7 @@ app.set('view engine', 'ejs')
 
 // 使用记录请求日志的中间件
 app.use(morgan('dev'))
-
+app.use('/api', eventRouter)
 app.get('/', (req, res) => {
     res.render('index')
 })
@@ -43,6 +44,6 @@ app.get('/comments/list', (req, res) => {
     res.render('comments/list')
 })
 
-app.listen(3003, () => {
+app.listen(port, () => {
     console.log('app is running :http://localhost:3000')
 })
