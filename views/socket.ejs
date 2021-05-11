@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.io</title>
+</head>
+
+<body>
+    <h1>Socket.io App</h1>
+    <form>
+        <input type="text" name="message" id="message" value="">
+        <button id="button">Send</button>
+    </form>
+    <div id="message-board"></div>
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" charset="utf-8"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    let socket = io()
+    $('form').submit(function() {
+        socket.emit('message', $('#message').val())
+        $('#message').val('')
+        return false
+    })
+    socket.on('message', function(message) {
+        $('#message-board').append($('<div>').text(message))
+    })
+</script>
+
+</html>

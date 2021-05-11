@@ -3,6 +3,7 @@ const express = require('express')
 const morgan = require('morgan')
 const path = require('path')
 const bodyParser = require('body-parser')
+const SocketIO = require('socket.io')
 const eventRouter = require('./routes/eventRouter')
 const app = new express()
 const port = process.env.PORT || 3000
@@ -25,8 +26,10 @@ app.get('/', (req, res) => {
 app.get('/comments/index', (req, res) => {
     res.render('comments/index')
 })
-
-// 提交评论
+app.get('/socket', (req, res) => {
+        res.render('socket')
+    })
+    // 提交评论
 app.post('/comments/index', (req, res) => {
     if (!req.body.comment) {
         res.status(400).send('请输入评论内容')
@@ -44,6 +47,20 @@ app.get('/comments/list', (req, res) => {
     res.render('comments/list')
 })
 
-app.listen(port, () => {
+let server = app.listen(port, () => {
     console.log('app is running :http://localhost:3000')
+})
+
+let io = SocketIO(server)
+
+io.on('connection', (socket) => {
+    console.log('user connected')
+    socket.on('disconnect', () => {
+        console.log('user disconnected')
+    })
+    socket.on('message', (message) => {
+        console.log(message)
+        io.emit('message', message)
+    })
+
 })
