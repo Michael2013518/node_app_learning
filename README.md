@@ -18,4 +18,12 @@
     2. brew install  mongodb/brew/mongodb-community@4.2
     3. mongod --dbpath ~/Download/data/db
 
+## 生成公钥和私钥
+
+    MacOS:
+    > openssl
+    > genrsa -out rsa_private_key.pem 1024 
+    > rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
+
+    验证jwt:https://jwt.io/
 
