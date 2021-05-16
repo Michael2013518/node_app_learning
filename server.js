@@ -8,8 +8,27 @@ const eventRouter = require('./routes/eventRouter')
 const app = new express()
 const port = process.env.PORT || 3000
 
+const fileFilter = (req, file, callback) => {
+    if (!file.originalname.match(/\.(jpg|png|gif|jpeg)$/)) {
+        return callback(new Error('images only:'), false)
+    }
+    callback(null, true)
+}
+
+// 文件上传
+const multer = require('multer')
+const upload = multer({ dest: 'upload/', fileFilter })
+
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use((error, request, response) => {
+    if (error) {
+        response.status(500).send({
+            message: error.message
+        })
+    }
+})
 let comments = []
 app.locals.comments = comments
 
@@ -47,6 +66,14 @@ app.get('/comments/list', (req, res) => {
     res.render('comments/list')
 })
 
+
+// 上传文件接口
+app.post('/upload', upload.single('avater'), (req, res, next) => {
+    res.send(req.file)
+})
+app.post('uploads', upload.array('photos', 3), (req, res, next) => {
+    res.send(req.files)
+})
 let server = app.listen(port, () => {
     console.log('app is running :http://localhost:3000')
 })
